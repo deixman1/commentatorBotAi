@@ -1,0 +1,17 @@
+{
+    "name": "project/commentator-bot-ai",
+    "description": "commentatorBotAi",
+    "require": {
+        "php": ">=8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/",
+            "Logs\\": "logs/"
+        }
+    },
+    "require-dev": {
+        "codeception/codeception": "*",
+        "jetbrains/phpstorm-attributes": "^1.0"
+    }
+}

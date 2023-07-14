@@ -1,0 +1,46 @@
+server {
+    listen       ${NGINX_LOCAL_PORT};
+    server_name ${NGINX_SERVER_NAME};
+
+    error_log  /var/log/nginx/error.log;
+    access_log /var/log/nginx/access.log;
+
+    # Add CORS headers to all other requests
+    add_header 'Access-Control-Allow-Origin' '${NGINX_ACCESS_CONTROL_ALLOW_ORIGIN}' always;
+    add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, PATCH, OPTIONS' always;
+    add_header 'Access-Control-Allow-Headers' 'X-Requested-With, Content-Type, Authorization, Cookie, X-Accel-Redirect, DNT, User-Agent, If-Modified-Since, Cache-Control, Range' always;
+    add_header 'Access-Control-Expose-Headers' 'Set-Cookie' always;
+    add_header 'Access-Control-Allow-Credentials' 'true' always;
+
+    root   /var/www/html/public;
+    location / {
+        try_files $uri /index.php$is_args$args;
+    }
+
+    location ~ \.php {
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param SCRIPT_NAME $fastcgi_script_name;
+        fastcgi_index index.php;
+        fastcgi_pass ${PROJECT_NAME}_php_fpm:9000;
+
+        # Add CORS headers to OPTIONS requests
+        # Эта секция перенесена сюда т.к. ее расположение в секции server по спецификации nginx является ошибкой
+        # тоже самое касается и location
+        if ($request_method = 'OPTIONS') {
+            add_header 'Access-Control-Max-Age' '1728000' always;
+            add_header 'Content-Type' 'text/plain; charset=utf-8' always;
+            add_header 'Content-Length' '0' always;
+            # Заголовки дублируются из секции server т.к. add_header в секции server будут проигнорированы
+            add_header 'Access-Control-Allow-Origin' '${NGINX_ACCESS_CONTROL_ALLOW_ORIGIN}' always;
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, PATCH, OPTIONS' always;
+            add_header 'Access-Control-Allow-Headers' 'X-Requested-With, Content-Type, Authorization, Cookie, X-Accel-Redirect, DNT, User-Agent, If-Modified-Since, Cache-Control, Range' always;
+            add_header 'Access-Control-Expose-Headers' 'Set-Cookie' always;
+            add_header 'Access-Control-Allow-Credentials' 'true' always;
+            return 200;
+        }
+    }
+
+}
