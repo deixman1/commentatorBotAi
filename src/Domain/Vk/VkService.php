@@ -42,10 +42,10 @@ class VkService
             return;
         }
         $text = $parsedData['object']['message']['text'];
-        if (!str_contains($text, '@public221612229 ') && !str_contains($text, '[club221612229|@public221612229] ')) {
+        if (!str_contains($text, '@botcommentai ') && !str_contains($text, '@public221612229 ') && !str_contains($text, '[club221612229|@public221612229] ')) {
             return;
         }
-        $text = str_replace(['@public221612229 ', '[club221612229|@public221612229] '], '', $text);
+        $text = str_replace(['@botcommentai ', '@public221612229 ', '[club221612229|@public221612229] '], '', $text);
         $response = $this->openAiApiService->completions($text);
         $this->logger->info('OpenAi', $response);
         foreach ($response['choices'] as $choice) {
