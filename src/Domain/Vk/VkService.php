@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Vk;
 
+use App\Infrastructure\OpenAi\OpenAiApiService;
 use App\Infrastructure\Vk\VkApiService;
 use Psr\Log\LoggerInterface;
 use Twig\Environment;
@@ -13,6 +14,7 @@ class VkService
         private readonly LoggerInterface $logger,
         private readonly Environment $environment,
         private readonly VkApiService $vkApiService,
+        private readonly OpenAiApiService $openAiApiService,
     )
     {
     }
@@ -24,14 +26,26 @@ class VkService
      */
     public function webhookProcessing(array $parsedData): void
     {
-        $this->sendMessage(['data' => json_encode($parsedData)]);
+        if ($parsedData['type'] !== 'message_new') {
+            return;
+        }
+        $text = $parsedData['object']['message']['text'];
+        if (!str_contains($text, '@public221612229 ') && !str_contains($text, '[club221612229|@public221612229] ')) {
+            return;
+        }
+        $text = str_replace(['@public221612229 ', '[club221612229|@public221612229] '], '', $text);
+        $response = $this->openAiApiService->completions($text);
+        $this->logger->info('OpenAi', $response);
+        foreach ($response['choices'] as $choice) {
+            $this->sendMessage($choice['message']['content']);
+        }
     }
 
-    private function sendMessage(array $renderData): void
+    private function sendMessage(string $msg): void
     {
         $this->vkApiService->sendMessage(
             peerId: 2000000002,
-            text: $this->environment->render('message.twig', $renderData),
+            text: $msg,
         );
     }
 }

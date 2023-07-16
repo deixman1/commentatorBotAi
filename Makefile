@@ -36,7 +36,7 @@ composer-install:
 composer-update:
 	$(DOCKER_CMD_PHP_CLI) composer update
 init: build composer-install
-php-tests:
+test:
 	$(DOCKER_CMD_PHP_CLI) php vendor/bin/codecept run --steps
 docker-logs:
 	$(DOCKER_CMD) logs $(PARAMS)

@@ -24,6 +24,9 @@ return static function (ContainerBuilder $containerBuilder) {
                 ],
                 'extensions' => []
             ],
+            'openAi' => [
+                'token' => $_ENV['OPENAI_TOKEN'],
+            ],
             'telegramBot' => [
                 'botToken' => $_ENV['TELEGRAM_BOT_TOKEN'],
                 'chatId' => $_ENV['TELEGRAM_BOT_CHAT_ID'],

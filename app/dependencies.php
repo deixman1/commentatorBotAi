@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Infrastructure\OpenAi\OpenAiApiService;
 use App\Infrastructure\Telegram\TelegramApiService;
 use App\Infrastructure\Vk\VkApiService;
 use DI\ContainerBuilder;
@@ -23,6 +24,12 @@ return static function (ContainerBuilder $containerBuilder) {
                 return new Client([
                     'timeout' => 30,
                 ]);
+            },
+            OpenAiApiService::class => function (ContainerInterface $container) {
+                return new OpenAiApiService(
+                    $container->get(Client::class),
+                    $container->get('settings')['openAi']['token'],
+                );
             },
             TelegramApiService::class => function (ContainerInterface $container) {
                 return new TelegramApiService(
