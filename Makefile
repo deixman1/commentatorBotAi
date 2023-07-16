@@ -46,6 +46,8 @@ docker-add-user:
 	sudo usermod -aG docker $(whoami)
 set-webhook:
 	curl https://api.telegram.org/bot$(PARAMS)/setWebhook?url=https://commentator-bot.loca.lt/telegram-webhook
+vk-consumer:
+	$(DOCKER_CMD) exec -d php-fpm bash -c "php bin/console/console.php vk-consumer >> /var/www/html/logs/vk-consumer.log 2>&1"
 
 %:
 	@:

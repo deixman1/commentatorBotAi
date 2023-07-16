@@ -41,6 +41,10 @@ return static function (ContainerBuilder $containerBuilder) {
                 'botToken' => $_ENV['TELEGRAM_BOT_LOGGER_TOKEN'],
                 'chatId' => $_ENV['TELEGRAM_BOT_LOGGER_CHAT_ID'],
             ],
+            'rabbit' => [
+                'project' => $_ENV['VK_EXCHANGE_PROJECT'],
+                'uri' => $_ENV['VK_EXCHANGE_URI'],
+            ],
         ],
     ];
     $containerBuilder->addDefinitions($settings);

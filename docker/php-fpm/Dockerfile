@@ -6,7 +6,12 @@ ARG GID
 ENV UID=${UID}
 ENV GID=${GID}
 
-RUN apk add --no-cache bash
+RUN apk add --no-cache bash autoconf build-base linux-headers \
+    && pecl install ast  \
+    && docker-php-ext-install sockets  \
+    && pecl install pcov \
+    && docker-php-ext-enable pcov \
+    && docker-php-ext-install pcntl
 
 RUN addgroup -g ${GID} --system appgroup
 RUN adduser -G appgroup --system -D -s /bin/bash -u ${UID} appuser

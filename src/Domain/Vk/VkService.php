@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace App\Domain\Vk;
 
 use App\Infrastructure\OpenAi\OpenAiApiService;
+use App\Infrastructure\RabbitMq\MessageBus;
 use App\Infrastructure\Vk\VkApiService;
+use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerInterface;
 use Twig\Environment;
 
@@ -15,8 +17,18 @@ class VkService
         private readonly Environment $environment,
         private readonly VkApiService $vkApiService,
         private readonly OpenAiApiService $openAiApiService,
+        private readonly MessageBus $messageBus,
     )
     {
+    }
+
+    /**
+     * @param array $parsedData
+     * @return void
+     */
+    public function publishToQueue(array $parsedData): void
+    {
+        $this->messageBus->send('vk', new AMQPMessage(json_encode($parsedData)));
     }
 
     /**

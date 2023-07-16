@@ -60,6 +60,18 @@ services:
       - ${MYSQL_EXTERNAL_PORT}:${MYSQL_LOCAL_PORT}
     networks:
       - project_network
+  rabbitmq:
+    container_name: ${PROJECT_NAME}_rabbitmq
+    image: rabbitmq
+    volumes:
+      - ./rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./rabbitmq/conf.d/management_agent.disable_metrics_collector.conf:/etc/rabbitmq/conf.d/management_agent.disable_metrics_collector.conf
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - project_network
 #  postgres:
 #    container_name: ${PROJECT_NAME}_postgres
 #    image: postgres

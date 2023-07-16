@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Infrastructure\OpenAi\OpenAiApiService;
+use App\Infrastructure\RabbitMq\MessageBus;
 use App\Infrastructure\Telegram\TelegramApiService;
 use App\Infrastructure\Vk\VkApiService;
 use DI\ContainerBuilder;
@@ -20,6 +21,12 @@ return static function (ContainerBuilder $containerBuilder) {
     // Определение всех библиотечных зависимостей
     $containerBuilder->addDefinitions(
         [
+            MessageBus::class => function (ContainerInterface $container) {
+                return new MessageBus(
+                    projectName: $container->get('settings')['rabbit']['project'],
+                    uri: $container->get('settings')['rabbit']['uri']
+                );
+            },
             Client::class => function (ContainerInterface $container) {
                 return new Client([
                     'timeout' => 30,

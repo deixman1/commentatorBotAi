@@ -3,13 +3,19 @@
     "description": "commentatorBotAi",
     "require": {
         "php": ">=8.2",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-sockets": "*",
+        "ext-pcntl": "*",
         "vlucas/phpdotenv": "^5.5",
         "twig/twig": "^3.6",
         "slim/psr7": "^1.6",
         "slim/slim": "^4.11",
         "php-di/php-di": "^7.0",
         "monolog/monolog": "^3.4",
-        "guzzlehttp/guzzle": "^7.7"
+        "guzzlehttp/guzzle": "^7.7",
+        "php-amqplib/php-amqplib": "^3.5",
+        "symfony/console": "^6.3"
     },
     "autoload": {
         "psr-4": {
