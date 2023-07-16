@@ -1,0 +1,22 @@
+{
+  "update_id": 21493940,
+  "message": {
+    "message_id": 52,
+    "from": {
+      "id": 1300466336,
+      "is_bot": false,
+      "first_name": "Сергей",
+      "last_name": "Сахаров",
+      "username": "Engel_Sein",
+      "language_code": "ru"
+    },
+    "chat": {
+      "id": -803102340,
+      "title": "фвы",
+      "type": "group",
+      "all_members_are_administrators": true
+    },
+    "date": 1689475383,
+    "text": "asdsad"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "update_id": 21493937,
+  "message": {
+    "message_id": 50,
+    "from": {
+      "id": 1300466336,
+      "is_bot": false,
+      "first_name": "Сергей",
+      "last_name": "Сахаров",
+      "username": "Engel_Sein",
+      "language_code": "ru"
+    },
+    "chat": {
+      "id": 1300466336,
+      "first_name": "Сергей",
+      "last_name": "Сахаров",
+      "username": "Engel_Sein",
+      "type": "private"
+    },
+    "date": 1689471776,
+    "text": "/start",
+    "entities": [
+      {
+        "offset": 0,
+        "length": 6,
+        "type": "bot_command"
+      }
+    ]
+  }
+}

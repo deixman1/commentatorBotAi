@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Domain\Telegram;
+namespace App\Domain\Vk;
 
-use App\Infrastructure\Telegram\TelegramApiService;
+use App\Infrastructure\Vk\VkApiService;
 use Psr\Log\LoggerInterface;
 use Twig\Environment;
 
-class TelegramService
+class VkService
 {
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly Environment $environment,
-        private readonly TelegramApiService $telegramApiService,
+        private readonly VkApiService $vkApiService,
     )
     {
     }
@@ -29,8 +29,8 @@ class TelegramService
 
     private function sendMessage(array $renderData): void
     {
-        $this->telegramApiService->sendMessage(
-            chatId: -803102340,
+        $this->vkApiService->sendMessage(
+            peerId: 2000000002,
             text: $this->environment->render('message.twig', $renderData),
         );
     }

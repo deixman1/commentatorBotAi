@@ -10,6 +10,7 @@ class TelegramApiService
 {
     public function __construct(
         private readonly Client $httpClient,
+        private readonly string $botToken,
     )
     {
     }
@@ -24,7 +25,7 @@ class TelegramApiService
             ];
             $request = new Request(
                 method: 'POST',
-                uri: $this->config->baseUrl . $this->config->botToken . '/sendMessage',
+                uri: 'https://api.telegram.org/bot' . $this->botToken . '/sendMessage',
                 headers: ['Content-Type' => 'application/json'],
                 body: json_encode($bodyParams, 256)
             );

@@ -28,6 +28,11 @@ return static function (ContainerBuilder $containerBuilder) {
                 'botToken' => $_ENV['TELEGRAM_BOT_TOKEN'],
                 'chatId' => $_ENV['TELEGRAM_BOT_CHAT_ID'],
             ],
+            'vkBot' => [
+                'version' => $_ENV['VK_VERSION'],
+                'botToken' => $_ENV['VK_BOT_TOKEN'],
+                'chatId' => $_ENV['VK_BOT_CHAT_ID'],
+            ],
             'loggerSettings' => [
                 'path' => __DIR__ . '/../logs',
                 'botToken' => $_ENV['TELEGRAM_BOT_LOGGER_TOKEN'],
