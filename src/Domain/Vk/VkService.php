@@ -45,6 +45,7 @@ class VkService
         if (!str_contains($text, '@club221612229 ')
             && !str_contains($text, '@botcommentai ')
             && !str_contains($text, '@public221612229 ')
+            && !str_contains($text, '[club221612229|@botcommentai] ')
             && !str_contains($text, '[club221612229|@public221612229] ')) {
             return;
         }
@@ -52,6 +53,7 @@ class VkService
             '@botcommentai ',
             '@public221612229 ',
             '[club221612229|@public221612229] ',
+            '[club221612229|@botcommentai] ',
             '@club221612229 '
         ], '', $text);
         $response = $this->openAiApiService->completions($text);
