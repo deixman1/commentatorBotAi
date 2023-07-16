@@ -73,3 +73,10 @@ services:
 #      - ${POSTGRES_EXTERNAL_PORT}:${POSTGRES_LOCAL_PORT}
 #    networks:
 #      - project_network
+#  localtunnel:
+#    container_name: ${PROJECT_NAME}_localtunnel
+#    image: efrecon/localtunnel
+#    depends_on:
+#      - nginx
+#    command:
+#      --subdomain commentator-bot --port ${NGINX_EXTERNAL_PORT}

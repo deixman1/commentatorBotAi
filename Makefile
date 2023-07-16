@@ -1,15 +1,11 @@
 UID := $(shell id -u)
 GID := $(shell id -g)
+CUR_DIR:=$(shell dirname "$(realpath $(firstword $(MAKEFILE_LIST)))")
 
 export UID
 export GID
 
-DOCKER_CMD := docker-compose
-ifeq ($(OS),Windows_NT)
-  DOCKER_CMD := $(DOCKER_CMD) -f "%cd%\docker\docker-compose.yml"
-else
-  DOCKER_CMD := $(DOCKER_CMD) -f $$(pwd)/docker/docker-compose.yml
-endif
+DOCKER_CMD := docker-compose -f $(CUR_DIR)/docker/docker-compose.yml
 
 PARAMS=$(filter-out $@,$(MAKECMDGOALS))
 
@@ -39,8 +35,7 @@ composer-install:
 	$(DOCKER_CMD_PHP_CLI) composer install
 composer-update:
 	$(DOCKER_CMD_PHP_CLI) composer update
-init-dev: set-env build composer-install
-init-prod: build composer-install
+init: build composer-install
 php-tests:
 	$(DOCKER_CMD_PHP_CLI) php vendor/bin/codecept run --steps
 docker-logs:
@@ -49,6 +44,8 @@ docker-config:
 	$(DOCKER_CMD) config
 docker-add-user:
 	sudo usermod -aG docker $(whoami)
+set-webhook:
+	curl https://api.telegram.org/bot$(PARAMS)/setWebhook?url=https://commentator-bot.loca.lt/telegram-webhook
 
 %:
 	@:
