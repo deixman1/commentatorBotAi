@@ -29,7 +29,7 @@ return static function (ContainerBuilder $containerBuilder) {
             },
             Client::class => function (ContainerInterface $container) {
                 return new Client([
-                    'timeout' => 30,
+                    'timeout' => 300,
                 ]);
             },
             OpenAiApiService::class => function (ContainerInterface $container) {
