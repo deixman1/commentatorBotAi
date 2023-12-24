@@ -12,6 +12,8 @@ PARAMS=$(filter-out $@,$(MAKECMDGOALS))
 
 DOCKER_CMD_PHP_CLI := $(DOCKER_CMD) exec php-fpm
 
+config:
+	$(DOCKER_CMD) config
 set-env:
 	cp -v ./docker/.env.example ./docker/.env
 nginx-console:
