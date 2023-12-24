@@ -45,6 +45,7 @@ docker-logs:
 	$(DOCKER_CMD) logs $(PARAMS)
 docker-config:
 	$(DOCKER_CMD) config
+#need reboot system
 docker-add-user:
 	sudo usermod -aG docker $(whoami)
 set-webhook:
