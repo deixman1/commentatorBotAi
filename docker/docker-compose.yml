@@ -1,4 +1,4 @@
-version: "3.3"
+version: "3.7"
 networks:
   project_network:
     name: ${PROJECT_NAME}_network
@@ -18,8 +18,8 @@ services:
     env_file:
       - .env
     ports:
-      - ${NGINX_EXTERNAL_PORT}:${NGINX_LOCAL_PORT}
-      - ${NGINX_SSL_EXTERNAL_PORT}:${NGINX_SSL_LOCAL_PORT}
+      - "${NGINX_EXTERNAL_PORT}:${NGINX_LOCAL_PORT}"
+      - "${NGINX_SSL_EXTERNAL_PORT}:${NGINX_SSL_LOCAL_PORT}"
     depends_on:
       - php-fpm
     volumes:
@@ -44,7 +44,7 @@ services:
     env_file:
       - .env
     ports:
-      - ${PHPFPM_EXTERNAL_PORT}:${PHPFPM_LOCAL_PORT}
+      - "${PHPFPM_EXTERNAL_PORT}:${PHPFPM_LOCAL_PORT}"
     volumes:
       - ./../:/var/www/html
     networks:
@@ -57,7 +57,7 @@ services:
     env_file:
       - .env
     ports:
-      - ${MYSQL_EXTERNAL_PORT}:${MYSQL_LOCAL_PORT}
+      - "${MYSQL_EXTERNAL_PORT}:${MYSQL_LOCAL_PORT}"
     networks:
       - project_network
   rabbitmq:
