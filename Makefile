@@ -4,8 +4,9 @@ CUR_DIR:=$(shell dirname "$(realpath $(firstword $(MAKEFILE_LIST)))")
 
 export UID
 export GID
+export CUR_DIR
 
-DOCKER_CMD := docker-compose -f $(CUR_DIR)/docker/docker-compose.yml
+DOCKER_CMD := docker-compose --env-file $(CUR_DIR)/docker/.env -f $(CUR_DIR)/docker/docker-compose.yml
 
 PARAMS=$(filter-out $@,$(MAKECMDGOALS))
 
