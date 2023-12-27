@@ -56,8 +56,8 @@ server {
     access_log /var/log/nginx/access.log;
 
     # SSL Certificate configuration
-    ssl_certificate /etc/letsencrypt/live/${NGINX_SERVER_NAME}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/${NGINX_SERVER_NAME}/privkey.pem;
+    ssl_certificate /etc/nginx/ssl/live/${NGINX_SERVER_NAME}/fullchain.pem;
+    ssl_certificate_key /etc/nginx/ssl/live/${NGINX_SERVER_NAME}/privkey.pem;
 
     root   /var/www/html/public;
     location / {
