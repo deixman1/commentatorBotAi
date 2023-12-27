@@ -6,3 +6,4 @@
 /docker/postgres/
 /docker/certbot/
 /logs/
+/cache/
