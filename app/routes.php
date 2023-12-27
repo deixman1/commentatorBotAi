@@ -9,7 +9,7 @@ use Slim\App;
 
 return static function (App $app) {
     $app->any('/', function (ServerRequestInterface $request, ResponseInterface $response) {
-        $response->getBody()->write("Diagnostic");
+        $response->getBody()->write("/");
         return $response;
     });
     $app->post('/telegram-webhook', TelegramWebhookController::class);
