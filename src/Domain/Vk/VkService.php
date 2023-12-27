@@ -42,6 +42,7 @@ class VkService
             return;
         }
         $text = $parsedData['object']['message']['text'];
+        $peerId = $parsedData['object']['message']['peer_id'];
         if (!str_contains($text, '@club221612229 ')
             && !str_contains($text, '@botcommentai ')
             && !str_contains($text, '@public221612229 ')
@@ -59,14 +60,14 @@ class VkService
         $response = $this->openAiApiService->completions($text);
         $this->logger->info('OpenAi', $response);
         foreach ($response['choices'] as $choice) {
-            $this->sendMessage($choice['message']['content']);
+            $this->sendMessage($peerId, $choice['message']['content']);
         }
     }
 
-    private function sendMessage(string $msg): void
+    private function sendMessage(int $peerId, string $msg): void
     {
         $this->vkApiService->sendMessage(
-            peerId: 2000000002,
+            peerId: $peerId,
             text: $msg,
         );
     }
