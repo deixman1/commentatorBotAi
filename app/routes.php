@@ -13,5 +13,5 @@ return static function (App $app) {
         return $response;
     });
     $app->post('/telegram-webhook', TelegramWebhookController::class);
-    $app->post('/vk-webhook', VkWebhookController::class);
+    $app->any('/vk-webhook', VkWebhookController::class);
 };
