@@ -71,7 +71,7 @@ class VkApiService
 
     private function uploadImageOnServer(array $uploadServer, string $urlPhoto): array
     {
-        $tempFile = tempnam(sys_get_temp_dir(), 'vk_upload');
+        $tempFile = tempnam(sys_get_temp_dir(), 'vk_upload') . '.png';
         // Download the image
         // Download the image
         $imageContents = file_get_contents($urlPhoto);
@@ -84,7 +84,6 @@ class VkApiService
 
         // Initialize cURL session
         $ch = curl_init();
-        dump($uploadServer['upload_url'], $tempFile, $urlPhoto);
 
         // Set cURL options
         curl_setopt($ch, CURLOPT_URL, $uploadServer['upload_url']);
