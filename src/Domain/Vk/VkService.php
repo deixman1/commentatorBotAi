@@ -51,10 +51,10 @@ class VkService
             return;
         }
         $text = str_replace([
+            '[club221612229|@botcommentai]',
+            '[club221612229|@public221612229]',
             '@botcommentai',
             '@public221612229',
-            '[club221612229|@public221612229]',
-            '[club221612229|@botcommentai]',
             '@club221612229'
         ], '', $text);
         $text = trim($text);

@@ -42,6 +42,7 @@ services:
     image: ${PROJECT_NAME}/php-fpm
     depends_on:
       - mysql
+      - rabbitmq
     env_file:
       - .env
     ports:
