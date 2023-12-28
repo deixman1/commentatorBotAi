@@ -20,7 +20,7 @@ class OpenAiApiService
     public function executeGptDell(string $userMsg): array
     {
         $bodyParams = [
-            'model' => 'dall-e-2',
+            'model' => 'dall-e-3',
             'prompt' => $userMsg,
             'n' => 1,
             'size' => '1024x1024',
