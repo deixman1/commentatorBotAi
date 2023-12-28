@@ -43,20 +43,21 @@ class VkService
         }
         $text = $parsedData['object']['message']['text'];
         $peerId = $parsedData['object']['message']['peer_id'];
-        if (!str_contains($text, '@club221612229 ')
-            && !str_contains($text, '@botcommentai ')
-            && !str_contains($text, '@public221612229 ')
-            && !str_contains($text, '[club221612229|@botcommentai] ')
-            && !str_contains($text, '[club221612229|@public221612229] ')) {
+        if (!str_contains($text, '@club221612229')
+            && !str_contains($text, '@botcommentai')
+            && !str_contains($text, '@public221612229')
+            && !str_contains($text, '[club221612229|@botcommentai]')
+            && !str_contains($text, '[club221612229|@public221612229]')) {
             return;
         }
         $text = str_replace([
-            '@botcommentai ',
-            '@public221612229 ',
-            '[club221612229|@public221612229] ',
-            '[club221612229|@botcommentai] ',
-            '@club221612229 '
+            '@botcommentai',
+            '@public221612229',
+            '[club221612229|@public221612229]',
+            '[club221612229|@botcommentai]',
+            '@club221612229'
         ], '', $text);
+        $text = trim($text);
         if (strncmp($text, "image", 5) === 0) {
             $text = str_replace([
                 'image ',

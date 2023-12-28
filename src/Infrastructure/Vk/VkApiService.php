@@ -26,7 +26,8 @@ class VkApiService
                 'v' => $this->version,
             ];
             if ($urlPhoto) {
-                $bodyParams['attachment'] = $urlPhoto;
+                $photo = $this->uploadImage($peerId, $urlPhoto);
+                $bodyParams['attachment'] = 'photo' . $photo['response'][0]['owner_id'] . '_' . $photo['response'][0]['id'];
             }
             $request = new Request(
                 method: 'POST',
@@ -39,5 +40,77 @@ class VkApiService
             );
             $this->httpClient->sendRequest($request);
         }
+    }
+
+    private function uploadImage(int $peerId, string $urlPhoto): array
+    {
+        return $this->saveMessagesPhoto(
+            $this->uploadImageOnServer(
+                $this->getMessagesUploadServer($peerId),
+                $urlPhoto
+            )
+        );
+    }
+
+    private function getMessagesUploadServer(int $peerId): array
+    {
+        $bodyParams = [
+            'peer_id' => $peerId,
+            'v' => $this->version,
+            'access_token' => $this->botToken,
+        ];
+        $request = new Request(
+            method: 'POST',
+            uri: 'https://api.vk.com/method/photos.getMessagesUploadServer',
+            headers: [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ],
+            body: json_encode($bodyParams, 256)
+        );
+        return json_decode($this->httpClient->sendRequest($request)->getBody()->getContents(), true);
+    }
+
+    private function uploadImageOnServer(array $uploadServer, string $urlPhoto): array
+    {
+        $response = $this->httpClient->request('POST', $uploadServer['upload_url'], [
+            'multipart' => [
+                [
+                    'name' => 'photo',
+                    'contents' => fopen($urlPhoto, 'r'),
+                ],
+            ],
+        ]);
+
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
+    private function saveMessagesPhoto(array $uploadedPhoto): array
+    {
+        $response = $this->httpClient->request('POST', 'https://api.vk.com/method/photos.saveMessagesPhoto', [
+            'multipart' => [
+                [
+                    'name' => 'photo',
+                    'contents' => $uploadedPhoto['photo'],
+                ],
+                [
+                    'name' => 'server',
+                    'contents' => $uploadedPhoto['server'],
+                ],
+                [
+                    'name' => 'hash',
+                    'contents' => $uploadedPhoto['hash'],
+                ],
+                [
+                    'name' => 'v',
+                    'contents' => $this->version,
+                ],
+                [
+                    'name' => 'access_token',
+                    'contents' => $this->botToken,
+                ],
+            ],
+        ]);
+
+        return json_decode($response->getBody()->getContents(), true);
     }
 }
