@@ -46,6 +46,7 @@ return static function (ContainerBuilder $containerBuilder) {
             },
             VkApiService::class => function (ContainerInterface $container) {
                 return new VkApiService(
+                    $container->get(LoggerInterface::class),
                     $container->get(Client::class),
                     $container->get('settings')['vkBot']['botToken'],
                     $container->get('settings')['vkBot']['version'],

@@ -5,10 +5,12 @@ namespace App\Infrastructure\Vk;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use Psr\Log\LoggerInterface;
 
 class VkApiService
 {
     public function __construct(
+        private readonly LoggerInterface $logger,
         private readonly Client $httpClient,
         private readonly string $botToken,
         private readonly string $version,
@@ -67,7 +69,9 @@ class VkApiService
             ],
             body: json_encode($bodyParams, 256)
         );
-        return json_decode($this->httpClient->sendRequest($request)->getBody()->getContents(), true);
+        $response = json_decode($this->httpClient->sendRequest($request)->getBody()->getContents(), true);
+        $this->logger->info('VK.RESPONSE', $response);
+        return $response;
     }
 
     private function uploadImageOnServer(array $uploadServer, string $urlPhoto): array
@@ -81,7 +85,9 @@ class VkApiService
             ],
         ]);
 
-        return json_decode($response->getBody()->getContents(), true);
+        $response = json_decode($response->getBody()->getContents(), true);
+        $this->logger->info('VK.RESPONSE', $response);
+        return $response;
     }
 
     private function saveMessagesPhoto(array $uploadedPhoto): array
@@ -111,6 +117,8 @@ class VkApiService
             ],
         ]);
 
-        return json_decode($response->getBody()->getContents(), true);
+        $response = json_decode($response->getBody()->getContents(), true);
+        $this->logger->info('VK.RESPONSE', $response);
+        return $response;
     }
 }
