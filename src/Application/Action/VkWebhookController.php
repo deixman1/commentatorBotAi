@@ -24,7 +24,9 @@ class VkWebhookController extends AbstractController
         if (isset($data['type']) && $data['type'] === 'confirmation') {
             return $this->getResponse('e950b985');
         }
-        $this->vkService->publishToQueue($this->request->getParsedBody());
+        if ($data) {
+            $this->vkService->publishToQueue($this->request->getParsedBody());
+        }
         return $this->getResponse('ok');
     }
 
