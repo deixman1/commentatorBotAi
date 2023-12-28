@@ -22,9 +22,9 @@ class VkWebhookController extends AbstractController
         $data = $this->request->getParsedBody();
         $this->logger->info('EVENT.VK', $data ?: []);
         if (isset($data['type']) && $data['type'] === 'confirmation') {
-            return $this->getResponse('81b98d51');
+            return $this->getResponse('e950b985');
         }
-//        $this->vkService->publishToQueue($this->request->getParsedBody());
+        $this->vkService->publishToQueue($this->request->getParsedBody());
         return $this->getResponse('ok');
     }
 
