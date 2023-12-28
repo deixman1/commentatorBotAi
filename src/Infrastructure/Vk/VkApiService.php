@@ -56,20 +56,14 @@ class VkApiService
 
     private function getMessagesUploadServer(int $peerId): array
     {
-        $bodyParams = [
-            'peer_id' => $peerId,
-            'v' => $this->version,
-            'access_token' => $this->botToken,
-        ];
-        $request = new Request(
-            method: 'POST',
-            uri: 'https://api.vk.com/method/photos.getMessagesUploadServer',
-            headers: [
-                'Content-Type' => 'application/x-www-form-urlencoded',
+        $response = $this->httpClient->request('POST', 'https://api.vk.com/method/photos.getMessagesUploadServer', [
+            'form_params' => [
+                'access_token' => $this->botToken,
+                'peer_id' => $peerId,
+                'v' => '5.131',
             ],
-            body: json_encode($bodyParams, 256)
-        );
-        $response = json_decode($this->httpClient->sendRequest($request)->getBody()->getContents(), true);
+        ]);
+        $response = json_decode($response->getBody()->getContents(), true);
         $this->logger->info('VK.RESPONSE', $response);
         return $response;
     }
