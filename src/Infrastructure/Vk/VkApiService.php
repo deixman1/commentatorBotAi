@@ -46,7 +46,7 @@ class VkApiService
     {
         return $this->saveMessagesPhoto(
             $this->uploadImageOnServer(
-                $this->getMessagesUploadServer($peerId),
+                $this->getMessagesUploadServer($peerId)['response'],
                 $urlPhoto
             )
         );
