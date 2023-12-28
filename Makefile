@@ -38,7 +38,7 @@ composer-install:
 	$(DOCKER_CMD_PHP_CLI) composer install
 composer-update:
 	$(DOCKER_CMD_PHP_CLI) composer update
-init: build composer-install
+init: build composer-install vk-consumer
 test:
 	$(DOCKER_CMD_PHP_CLI) php vendor/bin/codecept run --steps
 docker-logs:
