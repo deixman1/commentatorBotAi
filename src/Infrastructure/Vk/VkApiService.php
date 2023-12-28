@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Vk;
 
+use CURLFile;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use Psr\Log\LoggerInterface;
@@ -59,7 +60,7 @@ class VkApiService
         $response = $this->httpClient->request('POST', 'https://api.vk.com/method/photos.getMessagesUploadServer', [
             'form_params' => [
                 'access_token' => $this->botToken,
-                'peer_id' => $peerId,
+                'group_id' => 221612229,
                 'v' => '5.131',
             ],
         ]);
@@ -70,18 +71,38 @@ class VkApiService
 
     private function uploadImageOnServer(array $uploadServer, string $urlPhoto): array
     {
-        $response = $this->httpClient->request('POST', $uploadServer['upload_url'], [
-            'multipart' => [
-                [
-                    'name' => 'photo',
-                    'contents' => fopen($urlPhoto, 'r'),
-                ],
-            ],
-        ]);
+        $tempFile = tempnam(sys_get_temp_dir(), 'vk_upload');
+        // Download the image
+        // Download the image
+        $imageContents = file_get_contents($urlPhoto);
 
-        $response = json_decode($response->getBody()->getContents(), true);
-        $this->logger->info('VK.RESPONSE', $response);
-        return $response;
+        // Save the image to a temporary file
+        file_put_contents($tempFile, $imageContents);
+
+        // Create cURL file
+        $file = new CURLFile($tempFile);
+
+        // Initialize cURL session
+        $ch = curl_init();
+        dump($uploadServer['upload_url'], $tempFile, $urlPhoto);
+
+        // Set cURL options
+        curl_setopt($ch, CURLOPT_URL, $uploadServer['upload_url']);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, ['photo' => $file]);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        // Execute cURL session and get the result
+        $result = curl_exec($ch);
+
+        // Close cURL session
+        curl_close($ch);
+
+        // Decode the result
+        $decodedResult = json_decode($result, true);
+
+        $this->logger->info('VK.RESPONSE', $decodedResult);
+        return $decodedResult;
     }
 
     private function saveMessagesPhoto(array $uploadedPhoto): array

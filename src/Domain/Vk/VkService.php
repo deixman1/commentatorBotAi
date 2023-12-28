@@ -57,6 +57,7 @@ class VkService
             '@public221612229',
             '@club221612229'
         ], '', $text);
+        $text = trim($text, ',');
         $text = trim($text);
         if (strncmp($text, "image", 5) === 0) {
             $text = str_replace([
