@@ -57,18 +57,31 @@ class VkService
             '[club221612229|@botcommentai] ',
             '@club221612229 '
         ], '', $text);
-        $response = $this->openAiApiService->completions($text);
+        if (strncmp($text, "image", 5) === 0) {
+            $text = str_replace([
+                'image ',
+                'image'
+            ], '', $text);
+            $response = $this->openAiApiService->executeGptDell($text);
+            $this->logger->info('OpenAi', $response);
+            foreach ($response['data'] as $url) {
+                $this->sendMessage($peerId, $text, $url['url']);
+            }
+            return;
+        }
+        $response = $this->openAiApiService->executeGptTurbo($text);
         $this->logger->info('OpenAi', $response);
         foreach ($response['choices'] as $choice) {
             $this->sendMessage($peerId, $choice['message']['content']);
         }
     }
 
-    private function sendMessage(int $peerId, string $msg): void
+    private function sendMessage(int $peerId, string $msg, ?string $urlPhoto = null): void
     {
         $this->vkApiService->sendMessage(
             peerId: $peerId,
             text: $msg,
+            urlPhoto: $urlPhoto,
         );
     }
 }

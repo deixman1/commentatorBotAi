@@ -16,7 +16,7 @@ class VkApiService
     {
     }
 
-    public function sendMessage(int $peerId, string $text): void
+    public function sendMessage(int $peerId, string $text, ?string $urlPhoto = null): void
     {
         for ($i = 0; $i <= mb_strlen($text); $i += 4096) {
             $bodyParams = [
@@ -25,6 +25,9 @@ class VkApiService
                 'message' => mb_substr($text, $i, 4096),
                 'v' => $this->version,
             ];
+            if ($urlPhoto) {
+                $bodyParams['attachment'] = $urlPhoto;
+            }
             $request = new Request(
                 method: 'POST',
                 uri: 'https://api.vk.com/method/messages.send?' . http_build_query($bodyParams),
