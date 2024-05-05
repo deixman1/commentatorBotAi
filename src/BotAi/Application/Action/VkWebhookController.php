@@ -24,7 +24,7 @@ class VkWebhookController extends Controller
         $data = $request->all();
         $this->logger->info('EVENT.VK', $data ?: []);
         if (isset($data['type']) && $data['type'] === 'confirmation') {
-            return $this->responseFactory->json('e950b985');
+            return $this->responseFactory->json('7ab1dc70');
         }
         if ($data) {
             ProcessVk::dispatch($request->all());
