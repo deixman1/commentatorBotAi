@@ -52,6 +52,8 @@ make-command:
 	$(DOCKER_CMD_PHP_CLI) php artisan make:command App\\Shared\\Infrastructure\\Console\\$(PARAMS)
 make-job:
 	$(DOCKER_CMD_PHP_CLI) php artisan make:job App\\Shared\\Job\\$(PARAMS)
+migrate:
+	$(DOCKER_CMD_PHP_CLI) php artisan migrate
 queue-work:
 	$(DOCKER_CMD_PHP_CLI) php artisan queue:work
 queue-work-d:
