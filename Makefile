@@ -48,6 +48,9 @@ docker-add-user:
 set-webhook:
 	curl https://api.telegram.org/bot$(PARAMS)/setWebhook?url=https://commentator-bot.loca.lt/telegram-webhook
 
+certbot-certonly:
+	$(DOCKER_CMD) run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d $(PARAMS)
+
 make-command:
 	$(DOCKER_CMD_PHP_CLI) php artisan make:command App\\Shared\\Infrastructure\\Console\\$(PARAMS)
 make-job:
