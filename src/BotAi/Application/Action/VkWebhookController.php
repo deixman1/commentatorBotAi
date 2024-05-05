@@ -8,6 +8,7 @@ use App\Shared\Job\ProcessVk;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Psr\Log\LoggerInterface;
 
 class VkWebhookController extends Controller
@@ -19,16 +20,16 @@ class VkWebhookController extends Controller
     {
     }
 
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request): Response
     {
         $data = $request->all();
         $this->logger->info('EVENT.VK', $data ?: []);
         if (isset($data['type']) && $data['type'] === 'confirmation') {
-            return $this->responseFactory->json('7ab1dc70');
+            return $this->responseFactory->make('7ab1dc70');
         }
         if ($data) {
             ProcessVk::dispatch($request->all());
         }
-        return $this->responseFactory->json('ok');
+        return $this->responseFactory->make('ok');
     }
 }
