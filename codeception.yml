@@ -1,4 +1,4 @@
-namespace: AppTest
+namespace: Tests
 support_namespace: Support
 paths:
     tests: tests

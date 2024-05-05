@@ -1,4 +1,4 @@
-FROM php:8.2-fpm-alpine
+FROM php:8.3-fpm-alpine
 
 ARG UID
 ARG GID
@@ -6,12 +6,14 @@ ARG GID
 ENV UID=${UID}
 ENV GID=${GID}
 
-RUN apk add --no-cache bash autoconf build-base linux-headers \
+RUN apk update
+RUN apk add --no-cache libzip-dev bash autoconf build-base linux-headers \
     && pecl install ast  \
     && docker-php-ext-install sockets  \
     && pecl install pcov \
     && docker-php-ext-enable pcov \
-    && docker-php-ext-install pcntl
+    && docker-php-ext-install pcntl \
+    && docker-php-ext-install zip
 
 RUN addgroup -g ${GID} --system appgroup
 RUN adduser -G appgroup --system -D -s /bin/bash -u ${UID} appuser

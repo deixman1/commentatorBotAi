@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AppTest\Support;
+namespace Tests\Support;
 
 /**
  * Inherited Methods

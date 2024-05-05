@@ -41,7 +41,6 @@ services:
         - GID=${GID}
     image: ${PROJECT_NAME}/php-fpm
     depends_on:
-      - mysql
       - rabbitmq
     env_file:
       - .env
@@ -49,17 +48,6 @@ services:
       - "${PHPFPM_EXTERNAL_PORT}:${PHPFPM_LOCAL_PORT}"
     volumes:
       - ./../:/var/www/html
-    networks:
-      - project_network
-  mysql:
-    container_name: ${PROJECT_NAME}_mysql
-    image: mysql
-    volumes:
-      - ./mysql:/var/lib/mysql
-    env_file:
-      - .env
-    ports:
-      - "${MYSQL_EXTERNAL_PORT}:${MYSQL_LOCAL_PORT}"
     networks:
       - project_network
   rabbitmq:
@@ -74,22 +62,3 @@ services:
       - "15672:15672"
     networks:
       - project_network
-#  postgres:
-#    container_name: ${PROJECT_NAME}_postgres
-#    image: postgres
-#    volumes:
-#      - ./postgres:/data/postgres
-#    restart: unless-stopped
-#    env_file:
-#      - .env
-#    ports:
-#      - ${POSTGRES_EXTERNAL_PORT}:${POSTGRES_LOCAL_PORT}
-#    networks:
-#      - project_network
-#  localtunnel:
-#    container_name: ${PROJECT_NAME}_localtunnel
-#    image: efrecon/localtunnel
-#    depends_on:
-#      - nginx
-#    command:
-#      --subdomain commentator-bot --port ${NGINX_EXTERNAL_PORT}
